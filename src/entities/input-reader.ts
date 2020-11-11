@@ -16,7 +16,11 @@ export class InputReader {
             country.xh <= 10,
             country.xl >= 1,
             country.yh <= 10,
-            country.yl >= 1
+            country.yl >= 1,
+            !_.isNaN(country.xl),
+            !_.isNaN(country.yl),
+            !_.isNaN(country.xh),
+            !_.isNaN(country.yh),
         ];
     }
 
@@ -106,6 +110,9 @@ export class InputReader {
                     .filter(x => x)
                     .map(rawCountry => {
                         const countryValues = rawCountry.split(' ');
+                        if (countryValues.length !== 5) {
+                            throw new Error('Invalid amount of arguments');
+                        }
                         const country: CountryDTO = {
                             name: countryValues[0],
                             xl: parseInt(countryValues[1]),
