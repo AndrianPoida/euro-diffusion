@@ -1,9 +1,10 @@
-import { getCases } from './modules/input-reader';
+import { InputReader } from './entities/input-reader';
 import { EuroDiffusionSimulator } from './entities/euro-diffusion-simulator';
 
 const runTask = () => {
     try {
-        const testCases = getCases('input.txt');
+        const inputReader = new InputReader('input.txt');
+        const testCases = inputReader.getTestCases();
         testCases.forEach((testCase, indx) => {
             const simulator = new EuroDiffusionSimulator(testCase);
             simulator.simulate();
@@ -11,7 +12,7 @@ const runTask = () => {
             simulator.printResult();
         });
     } catch (e) {
-        console.error('ERROR:', e);
+        console.error('ERROR:', e.message);
     }
 };
 runTask();
