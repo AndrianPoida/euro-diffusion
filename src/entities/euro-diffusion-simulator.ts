@@ -12,11 +12,11 @@ export class EuroDiffusionSimulator {
         this.cities = _.flatMap(this.countries, (country: Country) => country.cities);
     }
 
-    allCountriesCompleted() {
+    private allCountriesCompleted() {
         return this.countries.every(country => !_.isUndefined(country.daysForCompletion));
     }
 
-    setCompletionDaysForCompletedCountries(day: number) {
+    private setCompletionDaysForCompletedCountries(day: number) {
         this.countries.forEach(country => {
             if (!_.isUndefined(country.daysForCompletion)) return;
             if (country.allCitiesCompleted(this.countries)) {
@@ -25,7 +25,7 @@ export class EuroDiffusionSimulator {
         });
     }
 
-    findNeighbours(city: City) {
+    private findNeighbours(city: City) {
         return this.cities.filter(anotherCity =>
             !(anotherCity.x === city.x && anotherCity.y === city.y) && (
                 (
@@ -40,18 +40,18 @@ export class EuroDiffusionSimulator {
         );
     }
 
-    makeMotifsExchange(city1: City, city2: City) {
+    private makeMotifsExchange(city1: City, city2: City) {
         const city1MotifsToPay = city1.makePayment();
         city2.receivePayment(city1MotifsToPay);
         const city2MotifsToPay = city2.makePayment();
         city1.receivePayment(city2MotifsToPay);
     }
 
-    startTransactionsForEachCity() {
+    private startTransactionsForEachCity() {
         this.cities.forEach(city => city.startTransaction());
     }
 
-    finishTransactionsForEachCity() {
+    private finishTransactionsForEachCity() {
         this.cities.forEach(city => city.finishTransaction());
     }
 

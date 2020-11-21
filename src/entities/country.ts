@@ -1,7 +1,6 @@
 import { CountryDTO } from '../models/country';
 import { City } from './city';
 import { DEFAULT_BALANCE } from '../constants';
-import { MotifDTO } from '../models/motif';
 
 export class Country {
     public name: string;
@@ -19,20 +18,16 @@ export class Country {
         this.createCities();
     }
 
-    createCities () {
-        let y = this.yl;
-        while (y <= this.yh) {
-            let x = this.xl;
-            while (x <= this.xh) {
+    private createCities () {
+        for (let y = this.yl; y <= this.yh; y++) {
+            for (let x = this.xl; x <= this.xh; x++) {
                 this.cities.push(new City({
                     x,
                     y,
                     motifs: [{ name: this.name, balance: DEFAULT_BALANCE }],
                     countryName: this.name
                 }));
-                x++;
             }
-            y++;
         }
     }
 

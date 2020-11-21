@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
 import { CountryDTO } from '../models/country';
+import { MIN_COORDINATE, MAX_COORDINATE, MAX_COUNTRY_NAME_LENGTH } from '../constants';
 
 export class InputReader {
     private pathname: string;
@@ -13,14 +14,15 @@ export class InputReader {
         return [
             country.xl <= country.xh,
             country.yl <= country.yh,
-            country.xh <= 10,
-            country.xl >= 1,
-            country.yh <= 10,
-            country.yl >= 1,
+            country.xh <= MAX_COORDINATE,
+            country.xl >= MIN_COORDINATE,
+            country.yh <= MAX_COORDINATE,
+            country.yl >= MIN_COORDINATE,
             !_.isNaN(country.xl),
             !_.isNaN(country.yl),
             !_.isNaN(country.xh),
             !_.isNaN(country.yh),
+            country.name.length <= MAX_COUNTRY_NAME_LENGTH
         ];
     }
 
@@ -77,7 +79,7 @@ export class InputReader {
             },
             {
                 rule: countries.every(country => this.getCountryPoisitionRules(country).every(x => x)),
-                message: 'One or more countries have invalid coordinates'
+                message: 'One or more countries have invalid coordinates or name length'
             },
             {
                 rule: countries.length <= 1 || countries.every(country => this.countryHasNeighbours(countries, country)),
